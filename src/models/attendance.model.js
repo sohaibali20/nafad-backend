@@ -21,4 +21,4 @@ const attendanceSchema = new Schema(
 { timestamps: true }
 );
 
-const Attendance = mongoose.model('Attendance', attendanceSchema);
+export const Attendance = mongoose.model('Attendance', attendanceSchema);

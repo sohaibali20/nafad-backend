@@ -21,4 +21,4 @@ const dailysalesSchema = new Schema(
     }
 );
 
-const DailySales = mongoose.model('DailySales', dailysalesSchema);
+export const DailySales = mongoose.model('DailySales', dailysalesSchema);
