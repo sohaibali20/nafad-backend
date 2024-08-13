@@ -36,6 +36,7 @@ import userRouter from "./routes/user.router.js";
 import staffRouter from "./routes/staff.router.js";
 import attendanceRouter from "./routes/attendance.router.js";
 import reviewRouter from "./routes/review.router.js";
+import dailySalesRouter from "./routes/dailysales.router.js";
 
 
 //Routes Declaration
@@ -45,6 +46,7 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/staff", staffRouter);
 app.use("/api/v1/attendance", attendanceRouter);
 app.use("/api/v1/reviews", reviewRouter);
+app.use("/api/v1/daily-sales", dailySalesRouter);
 
 
 
