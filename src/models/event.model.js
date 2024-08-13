@@ -9,7 +9,6 @@ const ticketSchema = new Schema(
     buyer: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      // required: true,
     },
     category: {
       type: String,
@@ -20,9 +19,12 @@ const ticketSchema = new Schema(
       type: Number,
       required: true,
     },
+    soldStatus: {
+      type: Boolean,
+      default: false,
+    },
     purchaseDate: {
       type: Date,
-      default: Date.now,
     },
   },
   { timestamps: true }
