@@ -81,26 +81,21 @@ const storeTotalTicketsSoldOnDate = async (req, res) => {
     }
   };
 
-  //Update Daily Sales
-const updateDailySale = async (req, res) => {
+  //Update Daily Sales value
+  const updateDailySale = async (req, res) => {
     try {
-      const { date } = req.params;
-      const dailySale = await DailySales.findOne({ date });
-  
-      if (!dailySale) {
-        return res.status(404).send({ message: 'Daily Sale not found' });
-      }
-  
-      Object.keys(req.body).forEach(key => {
-        dailySale[key] = req.body[key];
-      });
-  
-      await dailySale.save();
-      res.send(dailySale);
+        const { date } = req.params;
+        const dailySale = await DailySales.findOneAndUpdate({ date }, req.body, { new: true });
+
+        if (!dailySale) {
+            return res.status(404).send({ message: 'Daily Sale not found' });
+        }
+
+        res.send(dailySale);
     } catch (error) {
-      res.status(400).send(error);
+        res.status(500).send(error);
     }
-  };
+}
 
   //Delete Daily Sale
 const deleteDailySale = async (req, res) => {
