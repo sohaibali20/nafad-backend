@@ -9,7 +9,7 @@ const ticketSchema = new Schema(
     buyer: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
+      // required: true,
     },
     category: {
       type: String,
