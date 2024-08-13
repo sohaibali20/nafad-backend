@@ -43,5 +43,7 @@ const staffSchema = new Schema(
     { timestamps: true }
   );
   
-  const Ticket = mongoose.model('Ticket', ticketSchema);
+  const Staff = mongoose.model('Staff', staffSchema);
+
+  export default Staff;
   

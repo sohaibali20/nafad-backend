@@ -42,11 +42,13 @@ const userSchema = new Schema(
       tickets: [
         {
           type: Schema.Types.ObjectId,
-          ref: 'Ticket',
+          ref: 'Event.tickets'
         }
       ],
     },
     { timestamps: true }
 );
 
-export const user = mongoose.model("User", userSchema)
+export const User = mongoose.model("User", userSchema)
+
+export default User;

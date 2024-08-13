@@ -1,1 +1,1 @@
-export const DB_Name = "nafadDB"
+export const DB_Name = "nafaddb"

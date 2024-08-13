@@ -1,19 +1,59 @@
+
+//Removed Trim, added eventOwner, genre and ticketPrice and gave ref to ticketPrice
+
 import mongoose, { Schema } from "mongoose";
+
+
+const ticketSchema = new Schema(
+  {
+    buyer: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    category: {
+      type: String,
+      enum: ['normal', 'premium'], // Ticket types
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    purchaseDate: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  { timestamps: true }
+);
+
+
 const eventSchema = new Schema(
     {
       name: {
         type: String,
         required: true,
-        trim: true,
         unique: true
       },
       poster: {
         type: String,
       },
+      eventOwner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+      },
+      genre: {
+        type: String,
+        required: true,
+        trim: true,
+      },
       location: {
         type: String,
         required: true,
         trim: true,
+
       },
       date: {
         type: Date,
@@ -23,29 +63,19 @@ const eventSchema = new Schema(
         type: String,
       },
       totalTickets: {
-        type: number,
+        type: Number,
       },
       ticketsSold: {
-        type: number,
+        type: Number,
       },
-      revenue: {
-        type: String,
-      },
-
       expenditure: {
-        type: String,
+        type: Number,
       },
       staff: [{
         type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
+        ref: 'User'
       }], // Array of staff members managing the event
-      tickets: [
-        {
-          type: Schema.Types.ObjectId,
-          ref: 'Ticket',
-        }
-      ],
+      tickets: [ticketSchema], // Array of tickets for the event
       attendance: [
         {
           buyer: {
@@ -63,5 +93,17 @@ const eventSchema = new Schema(
     },
     { timestamps: true }
   );
+
+  //Virtual for Revenue
+  eventSchema.virtual('revenue').get(function() {
+    return this.ticketPrice * this.ticketsSold;
+  });
+
+  eventSchema.set('toJSON', { virtuals: true});
+  eventSchema.set('toObject', { virtuals: true});
+
   
   const Event = mongoose.model('Event', eventSchema);
+
+  export default Event;
+  export { ticketSchema };
