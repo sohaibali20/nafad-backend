@@ -38,6 +38,7 @@ const userSchema = new Schema(
         type: String,
         enum: ['buyer', 'admin', 'eventowner'], // Role of the user, either a buyer or admin, event-owner
         required: true,
+        default: 'buyer'
       },
       tickets: [
         {
