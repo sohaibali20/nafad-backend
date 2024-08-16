@@ -1,5 +1,6 @@
 import Event from '../models/event.model.js';
 import User from '../models/user.model.js';
+import Attendance from '../models/attendance.model.js';
 import moment from 'moment';
 
 // Create a new event
@@ -41,20 +42,32 @@ const getEventByName = async (req, res) => {
 const getEventStats = async (req, res) => {
   try {
     const events = await Event.find();
+    const attendance = await Attendance.find();
+
+    if (events.length === 0) {
+      return res.status(404).send({ message: 'No events found' });
+    }
+
     let totalAttendees = 0;
     let totalRevenue = 0;
     let totalExpenditure = 0;
     let totalProfit = 0;
     let totalTicketPrice = 0;
     let totalEvents = events.length;
+    let totalTickets = 0
+
+
+    totalAttendees = attendance.length;
     events.forEach((event) => {
-      totalAttendees += event.attendance.length;
-      totalRevenue += event.revenue;
+
+
+      totalRevenue += event.tickets.filter(ticket => ticket.soldStatus === true).reduce((sum, ticket) => sum + ticket.price, 0);
       totalExpenditure += event.expenditure;
-      totalProfit += event.revenue - event.expenditure;
-      totalTicketPrice += event.ticketPrice;
+      totalProfit += (event.tickets.filter(ticket => ticket.soldStatus === true).reduce((sum, ticket) => sum + ticket.price, 0)) - event.expenditure;
+      totalTicketPrice += event.tickets.reduce((sum, ticket) => sum + ticket.price, 0);
+      totalTickets += event.tickets.length;
     });
-    const avgTicketPrice = totalTicketPrice / totalEvents;
+    const avgTicketPrice = parseInt(totalTicketPrice / totalTickets);
     res.send({
       totalAttendees,
       totalRevenue,

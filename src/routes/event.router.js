@@ -7,7 +7,7 @@ eventRouter.route("/create").post(createEvent);
 
 eventRouter.route("/").get(getEvents);
 
-eventRouter.route("/:name").get(getEventByName);
+eventRouter.route("/get/:name").get(getEventByName);
 
 eventRouter.route("/stats").get(getEventStats);
 
