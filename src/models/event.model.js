@@ -61,17 +61,11 @@ const eventSchema = new Schema(
         type: Date,
         required: true,
       },
-      description: {
-        type: String,
-      },
-      totalTickets: {
-        type: Number,
-      },
-      ticketsSold: {
-        type: Number,
-      },
       expenditure: {
         type: Number,
+      },
+      description: {
+        type: String,
       },
       staff: [{
         type: Schema.Types.ObjectId,
@@ -96,13 +90,13 @@ const eventSchema = new Schema(
     { timestamps: true }
   );
 
-  //Virtual for Revenue
-  eventSchema.virtual('revenue').get(function() {
-    return this.ticketPrice * this.ticketsSold;
-  });
+  // //Virtual for Revenue
+  // eventSchema.virtual('revenue').get(function() {
+  //   return this.ticketPrice * this.ticketsSold;
+  // });
 
-  eventSchema.set('toJSON', { virtuals: true});
-  eventSchema.set('toObject', { virtuals: true});
+  // eventSchema.set('toJSON', { virtuals: true});
+  // eventSchema.set('toObject', { virtuals: true});
 
   
   const Event = mongoose.model('Event', eventSchema);

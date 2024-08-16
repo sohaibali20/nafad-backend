@@ -1,4 +1,70 @@
 import Attendance from '../models/attendance.model.js';
+import User from '../models/user.model.js';
+import Event from '../models/event.model.js';
+
+// Function to get present buyers with specific details
+const getAttendanceDetails = async (req, res) => {
+    try {
+        const presentBuyers = await Attendance.find({ attendancestatus: 'present' })
+            .populate({
+                path: 'buyer',
+                select: 'age gender'
+            })
+            .populate({
+                path: 'event',
+                select: 'name'
+            });
+
+        const result = presentBuyers.map(attendance => ({
+            userId: attendance.buyer._id,
+            eventId: attendance.event._id,
+            eventName: attendance.event.name,
+            userAge: attendance.buyer.age,
+            userGender: attendance.buyer.gender,
+            attendanceStatus: attendance.attendancestatus
+        }));
+
+        res.send(result);
+    } catch (error) {
+        res.status(500).send(error);
+        console.log(error);
+    }
+};const getAttendanceDetailsForEvent = async (req, res) => {
+    const { eventName } = req.params;
+
+    try {
+        const requiredEvent = await Event.findOne({ eventName });
+
+        if (!requiredEvent) {
+            return res.status(404).send({ message: 'Event not found' });
+        }
+        const eventID = requiredEvent._id;
+        const presentBuyers = await Attendance.find({ attendancestatus: 'present', event: eventID })
+            .populate({
+                path: 'buyer',
+                select: 'age gender'
+            })
+            .populate({
+                path: 'event',
+                select: 'name'
+            });
+
+        const result = presentBuyers.map(attendance => ({
+            userId: attendance.buyer._id,
+            eventId: attendance.event._id,
+            eventName: attendance.event.name,
+            userAge: attendance.buyer.age,
+            userGender: attendance.buyer.gender,
+            attendanceStatus: attendance.attendancestatus
+        }));
+
+        res.send(result);
+    } catch (error) {
+        res.status(500).send(error);
+        console.log(error);
+    }
+};
+
 
 // Add new attendance
 const createAttendance = async (req, res) => {
@@ -64,4 +130,4 @@ const deleteAttendance = async (req, res) => {
     }
 }
 
-export { createAttendance, getAttendance, getAttendanceByEmail, updateAttendance, deleteAttendance };
+export { createAttendance, getAttendance, getAttendanceByEmail, updateAttendance, deleteAttendance, getAttendanceDetailsForEvent };
