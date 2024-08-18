@@ -44,7 +44,7 @@ import loginRouter from "./routes/login.router.js";
 //Routes Declaration
 
 app.use("/api/v1/events", authenticateToken, eventRouter);
-app.use("/api/v1/users", authenticateToken, userRouter);
+app.use("/api/v1/users", userRouter);
 app.use("/api/v1/staff", authenticateToken, staffRouter);
 app.use("/api/v1/attendance", authenticateToken, attendanceRouter);
 app.use("/api/v1/reviews", authenticateToken, reviewRouter);

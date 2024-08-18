@@ -1,10 +1,12 @@
 import User from "../models/user.model.js";
+import bcrypt from "bcrypt";
 
 // Create a new user
 
 const createUser = async (req, res) => {
     try {
-        const user = new User(req.body);
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const user = new User({ ...req.body, password: hashedPassword });
         await user.save();
         res.status(201).send(user);
     } catch (error) {
@@ -41,6 +43,11 @@ const getUserByEmail = async (req, res) => {
 const updateUser = async (req, res) => {
     const email = req.params.email;
     try {
+
+        if (req.body.password) {
+            req.body.password = await bcrypt.hash(req.body.password, 10);
+        }
+
         const user = await User.findOneAndUpdate({email}, req.body, { new: true, runValidators: true });
         if (!user) {
             return res.status(404).send({ message: 'User not found' });

@@ -1,6 +1,7 @@
 import staff from '../models/staff.model.js';
 import user from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 
 //Login
@@ -15,7 +16,7 @@ const login = async (req, res) => {
       return res.status(404).send({ message: 'Invalid Email, User not found' });
     }
     //Validate password
-    if (password !== requiredUser.password) {
+    if (!(bcrypt.compareSync(password, requiredUser.password))) {
       return res.status(400).send({ message: 'Invalid Password' });
     }
     //Generate token

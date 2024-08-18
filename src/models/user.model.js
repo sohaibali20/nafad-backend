@@ -29,8 +29,6 @@ const userSchema = new Schema(
       password: {
         type: String, // The password will be stored as a string
         required: true, // The field is required, so the document won't be saved without it
-        minlength: 8, // Sets a minimum length of 8 characters for the password
-        maxlength: 25, // Sets a max length of 25 characters for the password
         trim: true, // Trims any leading or trailing whitespace from the password
       },
       role: {
