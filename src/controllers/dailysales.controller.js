@@ -28,15 +28,23 @@ const getDailySalesForThisWeek = async (req, res) => {
   try {
     const today = new Date();
     const startOfWeek = new Date(today);
-    startOfWeek.setDate(today.getDate() - today.getDay());
     const endOfWeek = new Date(today);
-    endOfWeek.setDate(today.getDate() + (6 - today.getDay()));
+
+    // Set startOfWeek to the previous Sunday
+    startOfWeek.setDate(today.getDate() - today.getDay());
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    // Set endOfWeek to the next Saturday
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    endOfWeek.setHours(23, 59, 59, 999);
+
     const dailySales = await DailySales.find({
       date: {
         $gte: startOfWeek,
         $lte: endOfWeek,
       },
     });
+
     res.send(dailySales);
   } catch (error) {
     res.status(500).send(error);

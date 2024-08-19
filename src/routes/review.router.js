@@ -1,12 +1,12 @@
 import { Router } from "express";
 
-import { createReview, getReviewByEmail, getReviews, deleteReview } from "../controllers/review.controller.js";
+import { addReview, getReviewByEmail, getReviews, deleteReview } from "../controllers/review.controller.js";
 
 const reviewRouter = Router();
 
-reviewRouter.post("/create", createReview);
+reviewRouter.post("/add", addReview);
 
-reviewRouter.get("/", getReviews);
+reviewRouter.get("/get", getReviews);
 
 reviewRouter.get("/:email", getReviewByEmail);
 
