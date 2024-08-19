@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import {createDailySale, getDailySales, getDailySalesForThisWeek, storeTotalTicketsSoldOnDate, updateDailySale, deleteDailySale} from "../controllers/dailysales.controller.js";
+import {createDailySale, getDailySales, getDailySalesForThisWeek, storeTotalTicketsSoldOnDate, updateDailySale, deleteDailySale, incrementDailySales} from "../controllers/dailysales.controller.js";
 
 const dailySalesRouter = Router();
 
@@ -15,6 +15,8 @@ dailySalesRouter.route("/this-week").get(getDailySalesForThisWeek);
 dailySalesRouter.route("/update/:id").put(updateDailySale);
 
 dailySalesRouter.route("/delete/:id").delete(deleteDailySale);
+
+dailySalesRouter.route("/increment").post(incrementDailySales);
 
 
 export default dailySalesRouter;
