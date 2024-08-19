@@ -14,7 +14,6 @@ const reviewSchema = new Schema(
     },
     Avatar: {
       type: String,
-      required: true,
     },
     email: {
       type: String,
@@ -22,12 +21,6 @@ const reviewSchema = new Schema(
       index: true,
       unique: true,
     },
-    events: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Event",
-      },
-    ],
     stars: {
       type: Number,
       required: true,

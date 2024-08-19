@@ -1,25 +1,41 @@
 import Review  from "../models/reviews.model.js";
 
 //Create a new review
-const createReview = async (req, res) => {
+// Add a new review
+ const addReview = async (req, res) => {
     try {
-        const review = new Review(req.body);
-        await review.save();
-        res.status(201).send({message:"Review Added", review});
+      const { firstName, lastName, email, stars, comment } = req.body;
+  
+      // Check if a review with the same email already exists
+    //   const existingReview = await Review.findOne({ email });
+    //   if (existingReview) {
+    //     return res.status(400).json({ message: "Review with this email already exists." });
+    //   }
+  
+      const newReview = new Review({
+        firstName,
+        lastName,
+        email,
+        stars,
+        comment,
+      });
+  
+      const savedReview = await newReview.save();
+      res.status(201).json(savedReview);
     } catch (error) {
-        res.status(400).send(error);
+      res.status(500).json({ message: "Server error, could not add review." });
     }
-};
-
-//Get all reviews
-const getReviews = async (req, res) => {
+  };
+  
+  // Get all reviews
+ const getReviews = async (req, res) => {
     try {
-        const reviews = await Review.find();
-        res.send(reviews);
+      const reviews = await Review.find();
+      res.status(200).json(reviews);
     } catch (error) {
-        res.status(500).send(error);
+      res.status(500).json({ message: "Server error, could not fetch reviews." });
     }
-}
+  };
 
 //Get a single review
 const getReviewByEmail = async (req, res) => {
@@ -51,4 +67,4 @@ const deleteReview = async (req, res) => {
     }
 }
 
-export { createReview, getReviews, getReviewByEmail, deleteReview };
+export { addReview, getReviews, getReviewByEmail, deleteReview };
