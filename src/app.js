@@ -39,6 +39,7 @@ import attendanceRouter from "./routes/attendance.router.js";
 import reviewRouter from "./routes/review.router.js";
 import dailySalesRouter from "./routes/dailysales.router.js";
 import loginRouter from "./routes/login.router.js";
+import forgotPasswordRouter from "./routes/forgotPassword.router.js";
 
 
 //Routes Declaration
@@ -50,6 +51,7 @@ app.use("/api/v1/attendance", authenticateToken, attendanceRouter);
 app.use("/api/v1/reviews", authenticateToken, reviewRouter);
 app.use("/api/v1/daily-sales", authenticateToken, dailySalesRouter);
 app.use("/api/v1/login", loginRouter);
+app.use("/api/v1/forgot-password", forgotPasswordRouter);
 
 
 
