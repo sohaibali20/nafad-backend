@@ -121,5 +121,35 @@ const deleteDailySale = async (req, res) => {
     }
 };
 
-  export { createDailySale, getDailySales, getDailySalesForThisWeek, storeTotalTicketsSoldOnDate, updateDailySale, deleteDailySale };
+
+//Increment daily sales amount of the current day by 1 when api is called after every sale
+const incrementDailySales =  async () => {
+  try {
+      const currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+      const currentDay = new Date().getDay();
+
+      // Check if an entry with the current date already exists
+      const existingEntry = await DailySales.findOne({ date: currentDate });
+
+      if (existingEntry) {
+          // If entry exists, update the daily sales amount
+          existingEntry.totalSales += 1;
+          await existingEntry.save();
+          res.json('Daily Sale was updated');
+      } else {
+          // If no entry exists, create a new daily sale entry
+          const newDailySale = new DailySales({
+              date: currentDate,
+              day: currentDay,
+              totalSales: 1
+          });
+          await newDailySale.save();
+          console.log('New Daily Sale entry was created');
+      }
+  } catch (err) {
+      console.error(err.message);
+  }
+};
+
+  export { createDailySale, getDailySales, getDailySalesForThisWeek, storeTotalTicketsSoldOnDate, updateDailySale, deleteDailySale, incrementDailySales };
 

@@ -2,6 +2,7 @@ import Event from '../models/event.model.js';
 import User from '../models/user.model.js';
 import Attendance from '../models/attendance.model.js';
 import moment from 'moment';
+import { incrementDailySales } from './dailysales.controller.js';
 
 // Create a new event
 const createEvent = async (req, res) => {
@@ -202,8 +203,8 @@ const sellTicket = async (req, res) => {
 
     // Save the updated event
     await event.save();
-
     res.status(200).send(event);
+    incrementDailySales();
   } catch (error) {
     res.status(500).send({ error: error.message });
   }

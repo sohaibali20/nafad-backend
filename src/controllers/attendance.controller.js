@@ -29,7 +29,8 @@ const getAttendanceDetails = async (req, res) => {
         res.status(500).send(error);
         console.log(error);
     }
-};const getAttendanceDetailsForEvent = async (req, res) => {
+};
+const getAttendanceDetailsForEvent = async (req, res) => {
     const { eventName } = req.params;
 
     try {
@@ -39,7 +40,8 @@ const getAttendanceDetails = async (req, res) => {
             return res.status(404).send({ message: 'Event not found' });
         }
         const eventID = requiredEvent._id;
-        const presentBuyers = await Attendance.find({ attendancestatus: 'present', event: eventID })
+
+        const presentBuyers = await Attendance.find({ event: eventID , attendancestatus: 'present'})
             .populate({
                 path: 'buyer',
                 select: 'age gender'
@@ -57,7 +59,6 @@ const getAttendanceDetails = async (req, res) => {
             userGender: attendance.buyer.gender,
             attendanceStatus: attendance.attendancestatus
         }));
-
         res.send(result);
     } catch (error) {
         res.status(500).send(error);
@@ -91,7 +92,8 @@ const getAttendance = async (req, res) => {
 const getAttendanceByEmail = async (req, res) => {
     try {
         const email = req.params.email;
-        const attendance = await Attendance.findOne({email});
+        const userID = await User.findOne({ email });
+        const attendance = await Attendance.findOne({userID});
         if (!attendance) {
             return res.status(404).send({ message: 'Attendance not found' });
         }
