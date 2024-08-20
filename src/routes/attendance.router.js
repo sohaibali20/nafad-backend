@@ -14,7 +14,7 @@ attendanceRouter.route("/update/:email").put(updateAttendance);
 
 attendanceRouter.route("/delete/:email").delete(deleteAttendance);
 
-attendanceRouter.route("/details/:name").get(getAttendanceDetailsForEvent);
+attendanceRouter.route("/details/:eventName").get(getAttendanceDetailsForEvent);
 
 export default attendanceRouter;
 
