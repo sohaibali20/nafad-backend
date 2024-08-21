@@ -55,7 +55,7 @@ export const forgotPassword = async (req, res) => {
         const expiryTime = Date.now() + 3 * 60 * 1000;
 
         // Store the OTP and expiry time in the array
-        otpArray.push({ otp: hashedOTP, expiry: expiryTime });
+        otpArray.push({ email, otp: hashedOTP, expiry: expiryTime });
 
         // Send OTP to the user's email
         const mailOptions = {
@@ -84,12 +84,12 @@ export const forgotPassword = async (req, res) => {
 // Verify OTP
 export const verifyOTP = async (req, res) => {
     try {
-        const { otp } = req.body;
+        const { email, otp } = req.body;
 
         // Check if the OTP is correct
         let matchedOTP = null;
         for (const item of otpArray) {
-            if (await bcrypt.compare(otp, item.otp)) {
+            if (item.email === email && await bcrypt.compare(otp, item.otp)) {
                 matchedOTP = item;
                 break;
             }
